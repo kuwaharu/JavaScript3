@@ -3,69 +3,57 @@
   const addButton = document.getElementById('add_button');  //htmlから追加ボタンの値を取得
   const addTask = document.getElementById('add_task');  //htmlから入力したタスクの値の取得
   const todoLists = document.getElementById('todo_lists');  //htmlからリストの値の取得
-  
+
   // デフォルト値で1を設定
-  let index = 1;
-  
+  let idNumber = 1;
+
   // todoを保存する箱
   const tasks = [];
   
   //配列にオブジェクトとしてデータを追加する
   const addData = () => {
     tasks.push({
-      id: index,
-      title: addTask.value,
-    });
-    
- //HTML上にすでに出力してある配列を空にして、追加したデータを含めた配列内のデータを出力できるようにする
-    todoLists.innerHTML = '';
-
-    //関数に配列tasksを渡す
-    showTaskList(tasks);
+      id: idNumber,
+      title: addTask.value
+  });
+  showTaskList(tasks);
+    addTask.value = '';
+    idNumber++;
   };
-
+ 
+  
   //タグを追加して出力する関数
   const showTaskList = () => {
-    tasks.forEach((task,index) => {
-      // tr要素の生成
-      const todoItem = document.createElement("tr");
-      // todoのIDを表示するtdの生成
-      const todoId = document.createElement("td");
-      // todoのタイトルを表示するtdの生成
-      const todoTitle = document.createElement("td");
-      //作業中ボタンを表示するtdの生成
-      const todoStatus = document.createElement('td');
-      // 削除ボタンを表示するtdの生成
-      const todoDelete = document.createElement("td");
+    const todoItem = document.createElement("tr");
+    const todoId = document.createElement("td");
+    const todoTitle = document.createElement("td");
+   
+    todoTitle.innerHTML = addTask.value;
+    todoId.innerHTML = idNumber;
+    
+    todoLists.appendChild(todoItem);
+    todoItem.appendChild(todoId);
+    todoItem.appendChild(todoTitle);
 
-      todoId.innerHTML = index;
-      todoTitle.innerHTML = task.title;
+    const todoStatus = document.createElement('td');
+    const todoStatusBtn = document.createElement('button');
+    todoStatusBtn.innerHTML = '作業中';
+    todoItem.appendChild(todoStatus);
+    todoItem.appendChild(todoStatusBtn);
 
-      todoLists.appendChild(todoItem);
-      todoItem.appendChild(todoId);
-      todoItem.appendChild(todoTitle);
-      todoItem.appendChild(todoStatus);
-      todoItem.appendChild(todoDelete);
+    const todoDelete = document.createElement("td");
+    const todoDeleteBtn = document.createElement('button');
+    todoDeleteBtn.innerHTML = '削除';
+    todoItem.appendChild(todoDelete);
+    todoItem.appendChild(todoDeleteBtn);
+    };
 
-      const todoStatusBtn = document.createElement('button');
-      const todoDeleteBtn = document.createElement('button');
 
-      todoStatusBtn.innerHTML = '作業中';
-      todoDeleteBtn.innerHTML = '削除';
-
-      todoStatusBtn.appendChild(todoStatusBtn);
-      todoDeleteBtn.appendChild(todoDeleteBtn);
-    });
-  
-
-//追加ボタンをクリック
-addButton.addEventListener('click', () => {
-  const task = addTask.value;
-  addData(task, index ++);
-  addTask.value = '';
-});
-};
-
+  //追加ボタンをクリック
+  addButton.addEventListener('click', event => {
+    const task = addTask.value;
+    addData(task);  
+  });
 
 
 // ＜学習できること＞
