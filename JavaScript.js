@@ -29,6 +29,15 @@ const createStatusButton = () => {
   return status;
 }
 
+const createRemoveButton = () => {
+  const remove = document.createElement('td')
+  const removeButton = document.createElement('button')
+  removeButton.innerText = '削除'
+  remove.appendChild(removeButton)
+  return remove;
+}
+
+
 //タグを追加して出力する関数
 const showTaskList = () => {
   todoLists.innerHTML = '';
@@ -48,11 +57,9 @@ const showTaskList = () => {
     todoItem.appendChild(statusButton)
     todoItem.appendChild(statusButton)
   
-    const todoDelete = document.createElement('td')
-    const todoDeleteBtn = document.createElement('button')
-    todoDeleteBtn.innerHTML = '削除'
-    todoItem.appendChild(todoDelete)
-    todoItem.appendChild(todoDeleteBtn)
+    const removeButton = createRemoveButton()
+    todoItem.appendChild(removeButton)
+    todoItem.appendChild(removeButton)
   })
 }
 
