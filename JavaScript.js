@@ -4,8 +4,13 @@ const addButton = document.getElementById('add_button') //htmlから追加ボタ
 const addTask = document.getElementById('add_task') //htmlから入力したタスクの値の取得
 const todoLists = document.getElementById('todo_lists') //htmlからリストの値の取得
 
+const TASK_STATUS = {
+  inprogress: '作業中',
+  done: '完了',
+}
+
 // デフォルト値で1を設定
-let id = 1
+let id = 1;
 
 // todoを保存する箱
 const tasks = []
@@ -13,47 +18,58 @@ const tasks = []
 //配列にオブジェクトとしてデータを追加する
 const addData = () => {
   tasks.push({
-    id: id,
+    id,
     title: addTask.value,
+    status: TASK_STATUS.inprogress,
   })
+
   showTaskList(tasks)
   addTask.value = ''
   id++
 }
+console.log(tasks)
 
-const createStatusButton = () => {
+const createStatusButton = (task) => {
   const status = document.createElement('td')
   const statusButton = document.createElement('button')
-  statusButton.innerText = '作業中'
+  statusButton.innerText = task.status
   status.appendChild(statusButton)
   return status;
 }
 
-const createRemoveButton = () => {
-  const remove = document.createElement('td')
-  const removeButton = document.createElement('button')
-  removeButton.innerText = '削除'
-  remove.appendChild(removeButton)
-  return remove;
+const removeTask = (id) => {
+  tasks.splice(id,1) // 配列から削除
+  showTaskList(tasks);
 }
 
+  const createRemoveButton = () => {
+    const remove = document.createElement('td')
+    const removeButton = document.createElement('button')
+    removeButton.innerText = '削除'
+    remove.appendChild(removeButton)
+    removeButton.addEventListener('click', (id) => {
+      removeTask(id);
+    });
+    return remove;
+  };
+ 
 
 //タグを追加して出力する関数
 const showTaskList = () => {
   todoLists.innerHTML = '';
-  tasks.forEach((task, index) => {
+  tasks.forEach((task, index )=> {
     const todoItem = document.createElement('tr')
     const todoId = document.createElement('td')
     const todoTitle = document.createElement('td')
-  
+
     todoTitle.innerHTML = task.title
-    todoId.innerHTML = index+1
-  
+    todoId.innerHTML = index + 1
+
     todoLists.appendChild(todoItem)
     todoItem.appendChild(todoId)
     todoItem.appendChild(todoTitle)
   
-    const statusButton = createStatusButton()
+    const statusButton = createStatusButton(task)
     todoItem.appendChild(statusButton)
     todoItem.appendChild(statusButton)
   
@@ -61,7 +77,7 @@ const showTaskList = () => {
     todoItem.appendChild(removeButton)
     todoItem.appendChild(removeButton)
   })
-}
+};
 
 //追加ボタンをクリック
 addButton.addEventListener('click', () => {
@@ -69,15 +85,13 @@ addButton.addEventListener('click', () => {
   addData(task)
 })
 
-// ＜学習できること＞
-// ・配列の操作
-// ・オブジェクトの操作
 
 // 【要件】
 
-// - 追加ボタン押下時にタスクを登録できる
-// - タスクには、「ID、コメント、状態」が含まれる
-// - IDは連番にする
-// - コメントはフォームで入力された値が表示される
-// - 状態には、「作業中」と表示される
-// - 削除ボタンが表示されている（ここでは押下時の動作はつけなくてよい
+// - 削除ボタン押下時にそのタスクを削除できる
+// - タスク削除時はIDが振り直される
+// - 削除後、新たにタスクを追加するとIDが連番となっている
+
+// ＜学習できること＞
+// ・配列の操作
+// ・オブジェクトの操作
