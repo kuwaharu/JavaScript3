@@ -72,12 +72,27 @@ const showTaskList = () => {
     const statusButton = createStatusButton(task)
     todoItem.appendChild(statusButton)
     todoItem.appendChild(statusButton)
-  
+
+    //status変更ボタンクリック時の関数の呼び出し
+    statusButton.addEventListener('click',() => {
+      changeStatus(task, TASK_STATUS);
+      });
+      addTask.value = '';
+
+    //変更ボタンをクリックしたらstatusを変更する関数
+    const changeStatus = (task,TASK_STATUS) => {
+      if ( task.status === TASK_STATUS.inprogress) {
+        task.status = TASK_STATUS.done ;
+      } else if(task.status === TASK_STATUS.done){
+        task.status = TASK_STATUS.inprogress;
+      }
+      showTaskList(tasks);
+    };
+
     const removeButton = createRemoveButton()
     todoItem.appendChild(removeButton)
     todoItem.appendChild(removeButton)
-  })
-};
+  })};
 
 //追加ボタンをクリック
 addButton.addEventListener('click', () => {
@@ -88,10 +103,6 @@ addButton.addEventListener('click', () => {
 
 // 【要件】
 
-// - 削除ボタン押下時にそのタスクを削除できる
-// - タスク削除時はIDが振り直される
-// - 削除後、新たにタスクを追加するとIDが連番となっている
-
-// ＜学習できること＞
-// ・配列の操作
-// ・オブジェクトの操作
+// - タスクの状態を変更できる
+// - 作業中の状態でボタンをクリックすると完了へ変更される
+// - 完了の状態でボタンをクリックすると作業中へ変更される
